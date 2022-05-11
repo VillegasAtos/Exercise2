@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import productsJson from "../Data/ProductsJson.json";
 import upgradesJson from "../Data/UpgradesJson.json";
-import { searchPrice } from "./Functions/Excercise1Functions"
+import { searchPrice, getRows, addUpgrade, removeUpgrade } from "./Functions/Excercise1Functions"
 function Exercise1() {
     const [products, setProducts] = useState([]);
     const [searchProduct, setSearchProduct] = useState("");
@@ -18,40 +18,48 @@ function Exercise1() {
         setPrice(searchPrice(searchProduct, searchFinish, products));
     }, [searchProduct, searchFinish]);
 
-
-
-
     return (
         <>
             <h1>Exercise 1</h1>
-            Price: {price}
-            <br />
-            <br />
-            <select
-                value={searchProduct}
-                onChange={(e) => setSearchProduct(e.target.value)}
-            >
-                <option value="">Select an option</option>
-                {products.map((product, index) => (
-                    <option key={index} value={product.product}>
-                        {product.product}
-                    </option>
-                ))}
-            </select>
-            <select
-                value={searchFinish}
-                onChange={(e) => setSearchFinish(e.target.value)}
-            >
-                <option value="">Select an option</option>
-                {products.length > 0
-                    ? products[0].finishes.map((finish, index) => (
-                        <option key={index} value={finish.finish}>
-                            {finish.finish}
+            <h2>Price: {price}</h2>
+
+            <h5>Filter</h5>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Car: </span>
+                <select
+                    className="form-select"
+                    value={searchProduct}
+                    onChange={(e) => setSearchProduct(e.target.value)}
+                >
+                    <option value="">Select an option</option>
+                    {products.map((product, index) => (
+                        <option key={index} value={product.product}>
+                            {product.product}
                         </option>
-                    ))
-                    : null}
-            </select>
-            <table>
+                    ))}
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="basic-addon1">Finish: </span>
+                <select
+                    className="form-select"
+                    value={searchFinish}
+                    onChange={(e) => setSearchFinish(e.target.value)}
+                >
+                    <option value="">Select an option</option>
+                    {products.length > 0
+                        ? products[0].finishes.map((finish, index) => (
+                            <option key={index} value={finish.finish}>
+                                {finish.finish}
+                            </option>
+                        ))
+                        : null}
+                </select>
+            </div>
+
+
+            <table className="table table-light">
                 <thead>
                     <tr>
                         <th>Finish</th>
@@ -62,7 +70,7 @@ function Exercise1() {
                 </thead>
                 <tbody>
                     {products.length > 0
-                        ? getRows().map((row, index) => (
+                        ? getRows(products).map((row, index) => (
                             <tr key={index}>
                                 <td>{row.finish}</td>
                                 <td>{row.price0}</td>
@@ -77,7 +85,7 @@ function Exercise1() {
                         : null}
                 </tbody>
             </table>
-            <table id="TableUpgrades" hidden={true}>
+            <table className="table table-light" id="TableUpgrades" hidden={true}>
                 <thead>
                     <tr>
                         <th>Upgrade</th>
@@ -92,16 +100,18 @@ function Exercise1() {
                             <td>{upgrade.price}</td>
                             <td>
                                 <button
+                                    className="btn btn-success"
                                     id={`Add${index}`}
-                                    onClick={() => addUpgrade(upgrade.price, index)}
+                                    onClick={() => setPrice(addUpgrade(upgrade.price, index, price))}
                                 >
                                     Add
                                 </button>
 
                                 <button
+                                    className="btn btn-danger"
                                     id={`Remove${index}`}
                                     hidden={true}
-                                    onClick={() => RemoveUpgrade(upgrade.price, index)}
+                                    onClick={() => setPrice(removeUpgrade(upgrade.price, index, price))}
                                 >
                                     Remove
                                 </button>

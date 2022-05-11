@@ -1,4 +1,4 @@
- const getRows = () => {
+ const getRows = (products) => {
         let productsRows = [];
         for (let i = 0; i < products[0].finishes.length; i++) {
             let objectRows = {};
@@ -10,17 +10,17 @@
         }
         return productsRows;
     };
-    const addUpgrade = (upgradePrice, id) => {
-        setPrice(Number(price) + Number(upgradePrice));
-        document.getElementById(`Add${id}`).hidden = true;
-        document.getElementById(`Remove${id}`).hidden = false;
+    const addUpgrade = (upgradePrice, id,price) => {
+      document.getElementById(`Add${id}`).hidden = true;
+      document.getElementById(`Remove${id}`).hidden = false;
+      return(Number(price) + Number(upgradePrice));
     };
-    const RemoveUpgrade = (upgradePrice, id) => {
-        setPrice(Number(price) - Number(upgradePrice));
-        document.getElementById(`Add${id}`).hidden = false;
-        document.getElementById(`Remove${id}`).hidden = true;
+    const removeUpgrade = (upgradePrice, id,price) => {
+      document.getElementById(`Add${id}`).hidden = false;
+      document.getElementById(`Remove${id}`).hidden = true;
+      return(Number(price) - Number(upgradePrice));
     };
-       const searchPrice = () => {
+       const searchPrice = (searchProduct, searchFinish, products) => {
         if (searchProduct !== "" && searchFinish !== "") {
             document.getElementById(`TableUpgrades`).hidden = false;
             return(
@@ -34,4 +34,4 @@
         }
         
     };
-    export { getRows, addUpgrade, RemoveUpgrade,searchPrice };
+    export { getRows, addUpgrade, removeUpgrade,searchPrice };
